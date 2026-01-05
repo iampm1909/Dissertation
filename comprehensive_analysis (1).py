@@ -1,14 +1,9 @@
 """
 COMPREHENSIVE ANALYSIS SCRIPT FOR SYSTEMATIC REVIEW
 ====================================================
-This script reproduces ALL quantitative results reported in Chapter 4: Results
-
 Input: DissertationIncluded.csv (81 studies exported from Rayyan)
 Output: All statistics, frequencies, and percentages reported in the dissertation
-
-Author: [Your Name]
-Date: December 2025
-Course: MSc Business Analytics - Dissertation
+Note: This analysis was done early on in the project and supported the base for visualisations, however, liberty has been taken to make minimal changes based on manual verification so the numbers on visualisations might differ accordingly.
 """
 
 import pandas as pd
@@ -41,10 +36,10 @@ print(f"\n✓ Loaded {len(df)} studies from DissertationIncluded.csv")
 print(f"\nColumns in dataset: {list(df.columns)}")
 
 # ==============================================================================
-# SECTION 2: TEMPORAL DISTRIBUTION (Section 4.2.1)
+# SECTION 2: TEMPORAL DISTRIBUTION
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 2: TEMPORAL DISTRIBUTION (Chapter 4, Section 4.2.1)")
+print("SECTION 2: TEMPORAL DISTRIBUTION")
 print("="*80)
 
 # Count studies by year
@@ -71,10 +66,10 @@ recent_percentage = (len(recent_studies) / len(df)) * 100
 print(f"\nStudies in 2024-2026 period: {len(recent_studies)} ({recent_percentage:.1f}%)")
 
 # ==============================================================================
-# SECTION 3: RESEARCH METHODOLOGIES (Section 4.2.3)
+# SECTION 3: RESEARCH METHODOLOGIES
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 3: RESEARCH METHODOLOGIES (Chapter 4, Section 4.2.3)")
+print("SECTION 3: RESEARCH METHODOLOGIES")
 print("="*80)
 
 # Combine title and abstract for analysis
@@ -105,10 +100,10 @@ for methodology, keywords in methodology_keywords.items():
 print("\nNote: Percentages may exceed 100% as studies can employ multiple methodologies")
 
 # ==============================================================================
-# SECTION 4: PUBLICATION OUTLETS (Section 4.2.4)
+# SECTION 4: PUBLICATION OUTLETS
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 4: PUBLICATION OUTLETS (Chapter 4, Section 4.2.4)")
+print("SECTION 4: PUBLICATION OUTLETS")
 print("="*80)
 
 # Count studies with journal information
@@ -120,10 +115,10 @@ else:
     print("\nNo 'journal' column found in dataset")
 
 # ==============================================================================
-# SECTION 5: AUTHOR COLLABORATION (Section 4.2.5)
+# SECTION 5: AUTHOR COLLABORATION
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 5: AUTHOR COLLABORATION PATTERNS (Chapter 4, Section 4.2.5)")
+print("SECTION 5: AUTHOR COLLABORATION PATTERNS")
 print("="*80)
 
 # Count authors per paper (approximation based on 'and' or ';' in authors field)
@@ -141,10 +136,10 @@ print(f"  Range: {min_authors} to {max_authors} authors")
 print(f"  Most common: {mode_authors} authors ({mode_count} papers, {(mode_count/len(df)*100):.1f}%)")
 
 # ==============================================================================
-# SECTION 6: THEMATIC SYNTHESIS (Section 4.3)
+# SECTION 6: THEMATIC SYNTHESIS 
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 6: THEMATIC SYNTHESIS - 8 MAJOR THEMES (Chapter 4, Section 4.3)")
+print("SECTION 6: THEMATIC SYNTHESIS - 8 MAJOR THEMES")
 print("="*80)
 
 # Define theme keywords
@@ -172,10 +167,10 @@ for theme, keywords in theme_keywords.items():
     print(f"  {theme}: {count} studies ({percentage:.1f}%)")
 
 # ==============================================================================
-# SECTION 7: APPLICATION DOMAINS (Section 4.4)
+# SECTION 7: APPLICATION DOMAINS 
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 7: APPLICATION DOMAINS (Chapter 4, Section 4.4)")
+print("SECTION 7: APPLICATION DOMAINS")
 print("="*80)
 
 application_keywords = {
@@ -201,10 +196,10 @@ for application, keywords in application_keywords.items():
     print(f"  {application}: {count} studies ({percentage:.1f}%)")
 
 # ==============================================================================
-# SECTION 8: BLOCKCHAIN PLATFORMS (Section 4.5)
+# SECTION 8: BLOCKCHAIN PLATFORMS 
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 8: BLOCKCHAIN PLATFORMS (Chapter 4, Section 4.5)")
+print("SECTION 8: BLOCKCHAIN PLATFORMS")
 print("="*80)
 
 platform_keywords = {
@@ -227,10 +222,10 @@ for platform, keywords in platform_keywords.items():
     print(f"  {platform}: {count} studies ({percentage:.1f}%)")
 
 # ==============================================================================
-# SECTION 9: IMPLEMENTATION CHALLENGES (Section 4.6)
+# SECTION 9: IMPLEMENTATION CHALLENGES 
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 9: IMPLEMENTATION CHALLENGES (Chapter 4, Section 4.6)")
+print("SECTION 9: IMPLEMENTATION CHALLENGES")
 print("="*80)
 
 challenge_keywords = {
@@ -257,46 +252,10 @@ for challenge, keywords in challenge_keywords.items():
     print(f"  {challenge}: {count} studies ({percentage:.1f}%)")
 
 # ==============================================================================
-# SECTION 10: KEYWORD FREQUENCY ANALYSIS (Section 4.7.2)
+# SECTION 10: SAVE RESULTS TO FILES
 # ==============================================================================
 print("\n" + "="*80)
-print("SECTION 10: KEYWORD FREQUENCY ANALYSIS (Chapter 4, Section 4.7.2)")
-print("="*80)
-
-def count_exact_keywords(texts, keywords):
-    """Count exact keyword occurrences using word boundaries"""
-    freq = Counter()
-    for text in texts:
-        for keyword in keywords:
-            pattern = r'\b' + re.escape(keyword) + r'\b'
-            matches = len(re.findall(pattern, text, re.IGNORECASE))
-            if matches > 0:
-                freq[keyword] += matches
-    return freq
-
-# Define specific keywords to count
-all_keywords = [
-    'blockchain', 'electric vehicle', 'ev', 'security', 'privacy', 
-    'energy trading', 'efficiency', 'transparency', 'decentralized',
-    'smart contract', 'charging', 'scalability', 'consensus',
-    'interoperability', 'authentication', 'payment'
-]
-
-keyword_freq = count_exact_keywords(df['combined_text'], all_keywords)
-
-print("\nTop keyword frequencies (mentions across all 81 studies):")
-for keyword, count in sorted(keyword_freq.items(), key=lambda x: x[1], reverse=True):
-    print(f"  {keyword}: {count} mentions")
-
-# Combined EV count
-ev_combined = keyword_freq.get('electric vehicle', 0) + keyword_freq.get('ev', 0)
-print(f"\n  electric vehicle / EV (combined): {ev_combined} mentions")
-
-# ==============================================================================
-# SECTION 11: SAVE RESULTS TO FILES
-# ==============================================================================
-print("\n" + "="*80)
-print("SECTION 11: SAVING RESULTS TO OUTPUT FILES")
+print("SECTION 10: SAVING RESULTS TO OUTPUT FILES")
 print("="*80)
 
 # Save all results to CSV files for easy reference
@@ -328,12 +287,6 @@ for theme, count in theme_counts.items():
 results_df = pd.DataFrame(results_summary)
 results_df.to_csv('comprehensive_analysis_results.csv', index=False)
 print("\n✓ Results saved to: comprehensive_analysis_results.csv")
-
-# Save keyword frequencies
-keyword_df = pd.DataFrame(list(keyword_freq.items()), columns=['Keyword', 'Frequency'])
-keyword_df = keyword_df.sort_values('Frequency', ascending=False)
-keyword_df.to_csv('keyword_frequencies.csv', index=False)
-print("✓ Keyword frequencies saved to: keyword_frequencies.csv")
 
 # ==============================================================================
 # FINAL SUMMARY
